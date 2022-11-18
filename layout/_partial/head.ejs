@@ -20,7 +20,15 @@
   %>
   <title><% if (title){ %><%= title %> | <% } %><%= config.title %></title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <%- open_graph({twitter_id: theme.twitter, fb_admins: theme.fb_admins, fb_app_id: theme.fb_app_id}) %>
+  <% if (!is_post()){ %>
+  <meta name="description" content="<%= config.description %>">
+  <% }else{ %>
+  <meta name="description" content="<%- truncate(strip_html(page.content), {length: 200}) %>">
+  <% } %>
+  <% if (is_post()){ %>
+  <meta name="keywords" content="<%= join(page.tags) %>">
+  <% } %>
+  <meta name="author" content="<%= config.author %>">
   <% if (config.feed) { %>
     <%- feed_tag() %>
   <% } else if (theme.rss) { %>
